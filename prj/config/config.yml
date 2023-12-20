@@ -1,0 +1,11 @@
+service:
+  port: 8080
+
+mysql:
+  endpoint: localhost:3306
+  username: root
+  password: 123456
+  database: aiee
+  max_idle_conns: 3
+  max_open_conns: 3
+

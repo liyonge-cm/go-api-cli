@@ -1,0 +1,18 @@
+
+mysql:
+  endpoint: localhost:3306
+  username: root
+  password: 123456
+  database: aiee
+  max_idle_conns: 3
+  max_open_conns: 3
+
+frame:
+  out_path: ../
+  prj_name: prj-aiee
+  json_case: "camel"
+
+api:
+  tables: 
+    - user
+    - book
