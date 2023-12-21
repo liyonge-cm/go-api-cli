@@ -1,7 +1,10 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
+
+	"go-cli-prj/config"
 
 	"github.com/gin-gonic/gin"
 )
@@ -59,7 +62,7 @@ func Init() {
 	}
 
 	// 启动API服务
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(fmt.Sprintf(":%v", config.Cfg.Service.Port)); err != nil {
 		panic(err)
 	}
 }

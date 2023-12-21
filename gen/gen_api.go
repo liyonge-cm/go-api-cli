@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"go-cli/gen/templates"
 	"go-cli/utils"
@@ -33,6 +34,8 @@ func (s *GenServer) generatorApis() error {
 		if err != nil {
 			return err
 		}
+		_ = s.importApiRouter(s.apiPath, s.cfg.Frame.PrjName, table.TableFileName)
+
 	}
 	return nil
 }
@@ -132,13 +135,35 @@ func (s *GenServer) generatorDeleteApi(groupPath, prjName, packageName, modelNam
 }
 
 func (s *GenServer) generatorApiRouter(groupPath, prjName, packageName, groupRouter, createFuncName, readFuncName, readAllFuncName, updateFuncName, deleteFuncName string) error {
-	fileName := path.Join(groupPath, packageName+"_router.go")
+	fileName := path.Join(groupPath, packageName+".go")
 	content := templates.GetRouterContent(prjName, packageName, groupRouter, createFuncName, readFuncName, readAllFuncName, updateFuncName, deleteFuncName)
 	if s.isJsonCamel {
 		content = utils.JsonToCamel(content)
 	}
 	err := os.WriteFile(fileName, []byte(content), 0644)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *GenServer) importApiRouter(filePath, prjName, groupName string) error {
+	apiPath := path.Join(filePath, "apis.go")
+
+	datab, err := os.ReadFile(apiPath)
+	if err != nil {
+		return err
+	}
+	content := string(datab)
+	newImportContent := fmt.Sprintf(`"%v/service/apis/%v"`, prjName, groupName)
+	if !strings.Contains(content, newImportContent) {
+		content += fmt.Sprintf(`
+import _ %v`, newImportContent)
+	}
+
+	err = utils.SaveFile(apiPath, []byte(content))
+	if err != nil {
+		fmt.Println("SaveFile err", err.Error())
 		return err
 	}
 	return nil

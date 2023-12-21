@@ -10,9 +10,8 @@ mysql:
 frame:
   out_path: ../
   prj_name: prj-aiee
-  json_case: "camel"
+  json_case: ""
 
 api:
   tables: 
     - user
-    - book

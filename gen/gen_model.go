@@ -22,7 +22,7 @@ func (s *GenServer) GenModel() error {
 func (s *GenServer) generatorModels() error {
 	for _, table := range s.tableInfos {
 		filePath := path.Join(s.modelPath, table.TableFileName+".go")
-		content, err := s.genFieldsContent(table.TableModelName, table.Columns, s.isJsonCamel)
+		content, err := s.genFieldsContent(table.Table, table.TableModelName, table.Columns, s.isJsonCamel)
 		if err != nil {
 			return err
 		}
@@ -34,10 +34,10 @@ func (s *GenServer) generatorModels() error {
 	return nil
 }
 
-func (s *GenServer) genFieldsContent(tableName string, fields []*ColumnInfo, isJsonCamel bool) (content string, err error) {
+func (s *GenServer) genFieldsContent(tableName, tableModelName string, fields []*ColumnInfo, isJsonCamel bool) (content string, err error) {
 	content = fmt.Sprintf(`package %v
 
-type %v struct{`, s.modelPkgName, tableName)
+type %v struct{`, s.modelPkgName, tableModelName)
 	for _, field := range fields {
 		jsonCase := field.Field
 		if isJsonCamel {
@@ -49,6 +49,13 @@ type %v struct{`, s.modelPkgName, tableName)
 		content += pcontent
 	}
 	content += `
-}`
+}
+`
+	content += fmt.Sprintf(`
+func (%v) TableName() string {
+	return "%v"
+}
+`, tableModelName, tableName)
+
 	return
 }
