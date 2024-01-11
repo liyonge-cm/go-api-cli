@@ -1,4 +1,6 @@
-# go-cli
+# go-api-cli
+author:liyonge(aiee)
+
 根据表结构直接自动化生成各个表的CRUD，增加(Create)、读取(Read)、更新(Update)和删除(Delete)。
 
 ## API规则
@@ -22,11 +24,11 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 ```
 2. 以表名作为group，crud分别为create,get,getList,update,delete。
 如有一个表名为user，生成API请求地址分别为：
-http://localhost:8080/user/create
-http://localhost:8080/user/get
-http://localhost:8080/user/getList
-http://localhost:8080/user/update
-http://localhost:8080/user/delete
+  http://localhost:8080/user/create 
+  http://localhost:8080/user/get 
+  http://localhost:8080/user/getList 
+  http://localhost:8080/user/update 
+  http://localhost:8080/user/delete 
 
 
 ## cli使用
@@ -43,13 +45,13 @@ frame:
 
 api:
   tables: 
-    - user 指定生成API的表
+    - user 指定要生成API的表名
 ```
 
 3. 创建项目
 执行编辑文件创建项目
 ```shell
-go-cli -g frame
+go-api-cli -g frame
 ```
 或直接运行main文件
 ```shell
@@ -59,7 +61,7 @@ go run main.go -g frame
 4. 生成API
 执行编辑文件生成API
 ```shell
-go-cli -g api
+go-api-cli -g api
 ```
 或直接运行main文件
 ```shell
@@ -69,7 +71,7 @@ go run main.go -g api
 ## 启动生成的新项目
 ```shell
 # 1. 进入项目文件: 
-cd xxx/prj-aiee
+cd xxx/prj-aiee-api
 
 # 2. 下载依赖包: 
 go mod tidy
@@ -84,3 +86,4 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 
 ```
 
+生成的项目代码保持简洁易懂，方便根据项目实际需求二次开发。

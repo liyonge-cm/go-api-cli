@@ -9,7 +9,7 @@ mysql:
 
 frame:
   out_path: ../
-  prj_name: prj-aiee
+  prj_name: prj-aiee-api
   json_case: ""
 
 api:
