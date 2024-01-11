@@ -1,5 +1,6 @@
-# go-api-cli
-author:liyonge(aiee)
+# go-cli
+
+Author:liyonge(aiee)
 
 根据表结构直接自动化生成各个表的CRUD，增加(Create)、读取(Read)、更新(Update)和删除(Delete)。
 
@@ -24,11 +25,11 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 ```
 2. 以表名作为group，crud分别为create,get,getList,update,delete。
 如有一个表名为user，生成API请求地址分别为：
-  http://localhost:8080/user/create 
-  http://localhost:8080/user/get 
-  http://localhost:8080/user/getList 
-  http://localhost:8080/user/update 
-  http://localhost:8080/user/delete 
+- http://localhost:8080/user/create 
+- http://localhost:8080/user/get 
+- http://localhost:8080/user/getList 
+- http://localhost:8080/user/update 
+- http://localhost:8080/user/delete 
 
 
 ## cli使用
@@ -51,7 +52,7 @@ api:
 3. 创建项目
 执行编辑文件创建项目
 ```shell
-go-api-cli -g frame
+go-cli -g frame
 ```
 或直接运行main文件
 ```shell
@@ -61,7 +62,7 @@ go run main.go -g frame
 4. 生成API
 执行编辑文件生成API
 ```shell
-go-api-cli -g api
+go-cli -g api
 ```
 或直接运行main文件
 ```shell
