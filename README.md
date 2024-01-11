@@ -33,6 +33,12 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 
 
 ## cli使用
+
+首先下载源码，编译可执行文件
+```shell
+go build
+```
+
 1. 按规则创建库表
 
 2. 修改配置文件
