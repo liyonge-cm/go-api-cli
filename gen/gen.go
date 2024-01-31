@@ -1,8 +1,9 @@
 package gen
 
 import (
-	"go-api-cli/config"
 	"path"
+
+	"github.com/liyonge-cm/go-api-cli/config"
 
 	"gorm.io/gorm"
 )

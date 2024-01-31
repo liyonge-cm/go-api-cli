@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"go-api-cli/config"
-	"go-api-cli/gen"
-	"go-api-cli/gen_frame"
+	"github.com/liyonge-cm/go-api-cli/config"
+	"github.com/liyonge-cm/go-api-cli/gen"
+	"github.com/liyonge-cm/go-api-cli/gen_frame"
 )
 
 func main() {

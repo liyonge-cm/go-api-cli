@@ -2,9 +2,10 @@ package gen
 
 import (
 	"fmt"
-	"go-api-cli/utils"
 	"os"
 	"path"
+
+	"github.com/liyonge-cm/go-api-cli/utils"
 )
 
 func (s *GenServer) GenModel() error {

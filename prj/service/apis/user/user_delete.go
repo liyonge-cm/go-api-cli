@@ -3,9 +3,9 @@ package user
 import (
 	"time"
 
-	"go-api-cli-prj/model"
-	"go-api-cli-prj/service/apis/common"
-	"go-api-cli-prj/service/mysql"
+	"github.com/liyonge-cm/go-api-cli-prj/model"
+	"github.com/liyonge-cm/go-api-cli-prj/service/apis/common"
+	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

@@ -2,10 +2,11 @@ package gen_frame
 
 import (
 	"fmt"
-	"go-api-cli/utils"
 	"os"
 	"path"
 	"strings"
+
+	"github.com/liyonge-cm/go-api-cli/utils"
 )
 
 type GenFrameConfig struct {
@@ -37,7 +38,7 @@ func NewGenFrameConfig(outPath, prjName string) *GenFrameConfig {
 func NewGenFrameService(cfg *GenFrameConfig) *GenFrameService {
 	s := &GenFrameService{
 		cfg:        cfg,
-		genPrjName: "go-api-cli-prj",
+		genPrjName: "github.com/liyonge-cm/go-api-cli-prj",
 		genPrjPath: "./prj",
 		outPrjPath: path.Join(cfg.OutPath, cfg.PrjName),
 	}

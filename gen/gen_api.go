@@ -6,8 +6,8 @@ import (
 	"path"
 	"strings"
 
-	"go-api-cli/gen/templates"
-	"go-api-cli/utils"
+	"github.com/liyonge-cm/go-api-cli/gen/templates"
+	"github.com/liyonge-cm/go-api-cli/utils"
 )
 
 func (s *GenServer) GenApi() error {

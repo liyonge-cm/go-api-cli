@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"go-api-cli-prj/config"
+	"github.com/liyonge-cm/go-api-cli-prj/config"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,4 +1,4 @@
-module go-api-cli
+module github.com/liyonge-cm/go-api-cli
 
 go 1.19
 

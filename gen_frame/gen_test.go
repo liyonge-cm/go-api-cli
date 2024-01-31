@@ -2,11 +2,12 @@ package gen_frame
 
 import (
 	"fmt"
-	"go-api-cli/utils"
 	"os"
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/liyonge-cm/go-api-cli/utils"
 )
 
 func TestGen(t *testing.T) {

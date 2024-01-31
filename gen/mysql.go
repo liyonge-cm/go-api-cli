@@ -2,8 +2,9 @@ package gen
 
 import (
 	"fmt"
-	"go-api-cli/utils"
 	"regexp"
+
+	"github.com/liyonge-cm/go-api-cli/utils"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

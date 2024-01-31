@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"os"
 
-	"go-api-cli-prj/config"
-	"go-api-cli-prj/router"
-	_ "go-api-cli-prj/service/apis"
-	"go-api-cli-prj/service/logger"
-	"go-api-cli-prj/service/mysql"
+	"github.com/liyonge-cm/go-api-cli-prj/config"
+	"github.com/liyonge-cm/go-api-cli-prj/router"
+	_ "github.com/liyonge-cm/go-api-cli-prj/service/apis"
+	"github.com/liyonge-cm/go-api-cli-prj/service/logger"
+	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 )
 
 func main() {

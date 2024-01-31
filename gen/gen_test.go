@@ -2,8 +2,9 @@ package gen
 
 import (
 	"fmt"
-	"go-api-cli/config"
 	"testing"
+
+	"github.com/liyonge-cm/go-api-cli/config"
 )
 
 func TestGen(t *testing.T) {

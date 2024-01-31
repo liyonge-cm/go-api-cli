@@ -1,4 +1,4 @@
-module go-api-cli-prj
+module github.com/liyonge-cm/go-api-cli-prj
 
 go 1.19
 

@@ -1,4 +1,4 @@
-# go-api-cli
+# github.com/liyonge-cm/go-api-cli
 
 Author:liyonge(aiee)
 

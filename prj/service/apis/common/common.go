@@ -1,7 +1,7 @@
 package common
 
 import (
-	"go-api-cli-prj/service/logger"
+	"github.com/liyonge-cm/go-api-cli-prj/service/logger"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

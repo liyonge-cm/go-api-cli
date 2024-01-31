@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"go-api-cli/config"
+	"github.com/liyonge-cm/go-api-cli/config"
 
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
