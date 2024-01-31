@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"os"
 
-	"go-cli-prj/config"
-	"go-cli-prj/router"
-	_ "go-cli-prj/service/apis"
-	"go-cli-prj/service/logger"
-	"go-cli-prj/service/mysql"
+	"go-api-cli-prj/config"
+	"go-api-cli-prj/router"
+	_ "go-api-cli-prj/service/apis"
+	"go-api-cli-prj/service/logger"
+	"go-api-cli-prj/service/mysql"
 )
 
 func main() {

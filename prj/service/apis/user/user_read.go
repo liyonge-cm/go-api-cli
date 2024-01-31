@@ -1,9 +1,9 @@
 package user
 
 import (
-	"go-cli-prj/model"
-	"go-cli-prj/service/apis/common"
-	"go-cli-prj/service/mysql"
+	"go-api-cli-prj/model"
+	"go-api-cli-prj/service/apis/common"
+	"go-api-cli-prj/service/mysql"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

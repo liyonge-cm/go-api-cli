@@ -2,7 +2,7 @@ package gen_frame
 
 import (
 	"fmt"
-	"go-cli/utils"
+	"go-api-cli/utils"
 	"os"
 	"regexp"
 	"strings"

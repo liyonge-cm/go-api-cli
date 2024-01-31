@@ -1,4 +1,4 @@
-module go-cli-prj
+module go-api-cli-prj
 
 go 1.19
 

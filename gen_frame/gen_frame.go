@@ -2,7 +2,7 @@ package gen_frame
 
 import (
 	"fmt"
-	"go-cli/utils"
+	"go-api-cli/utils"
 	"os"
 	"path"
 	"strings"
@@ -37,7 +37,7 @@ func NewGenFrameConfig(outPath, prjName string) *GenFrameConfig {
 func NewGenFrameService(cfg *GenFrameConfig) *GenFrameService {
 	s := &GenFrameService{
 		cfg:        cfg,
-		genPrjName: "go-cli-prj",
+		genPrjName: "go-api-cli-prj",
 		genPrjPath: "./prj",
 		outPrjPath: path.Join(cfg.OutPath, cfg.PrjName),
 	}

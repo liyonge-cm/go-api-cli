@@ -1,7 +1,7 @@
 package common
 
 import (
-	"go-cli-prj/service/logger"
+	"go-api-cli-prj/service/logger"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

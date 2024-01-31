@@ -1,4 +1,4 @@
-module go-cli
+module go-api-cli
 
 go 1.19
 

@@ -1,6 +1,6 @@
 package user
 
-import "go-cli-prj/router"
+import "go-api-cli-prj/router"
 
 func init() {
 	group := router.NewGroup("user")

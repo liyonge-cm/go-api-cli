@@ -1,7 +1,7 @@
 package gen
 
 import (
-	"go-cli/config"
+	"go-api-cli/config"
 	"path"
 
 	"gorm.io/gorm"

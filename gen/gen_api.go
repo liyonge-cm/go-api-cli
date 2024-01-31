@@ -6,8 +6,8 @@ import (
 	"path"
 	"strings"
 
-	"go-cli/gen/templates"
-	"go-cli/utils"
+	"go-api-cli/gen/templates"
+	"go-api-cli/utils"
 )
 
 func (s *GenServer) GenApi() error {

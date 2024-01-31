@@ -1,4 +1,4 @@
-# go-cli
+# go-api-cli
 
 Author:liyonge(aiee)
 
@@ -56,9 +56,10 @@ api:
 ```
 
 3. 创建项目
+
 执行编辑文件创建项目
 ```shell
-go-cli -g frame
+go-api-cli -g frame
 ```
 或直接运行main文件
 ```shell
@@ -66,9 +67,10 @@ go run main.go -g frame
 ```
 
 4. 生成API
+
 执行编辑文件生成API
 ```shell
-go-cli -g api
+go-api-cli -g api
 ```
 或直接运行main文件
 ```shell

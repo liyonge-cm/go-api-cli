@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"go-cli/config"
-	"go-cli/gen"
-	"go-cli/gen_frame"
+	"go-api-cli/config"
+	"go-api-cli/gen"
+	"go-api-cli/gen_frame"
 )
 
 func main() {

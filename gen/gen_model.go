@@ -2,7 +2,7 @@ package gen
 
 import (
 	"fmt"
-	"go-cli/utils"
+	"go-api-cli/utils"
 	"os"
 	"path"
 )

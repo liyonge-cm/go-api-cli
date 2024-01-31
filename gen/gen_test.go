@@ -2,7 +2,7 @@ package gen
 
 import (
 	"fmt"
-	"go-cli/config"
+	"go-api-cli/config"
 	"testing"
 )
 
