@@ -59,7 +59,7 @@ func (c *CmdGen) Run() {
 			fmt.Println("gen", *c.mod, "failed", "generate api err", err.Error())
 			return
 		}
-		fmt.Println("gen", *c.mod, "api success")
+		fmt.Println("gen", *c.mod, "success")
 
 	case "frame":
 		s := gen_frame.NewGenFrameService(nil)

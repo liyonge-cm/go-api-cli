@@ -55,7 +55,9 @@ go install github.com/liyonge-cm/go-api-cli@1.0.0
 # 验证
 go-api-cli -v
 ```
+
 ![Alt text](images/version.png)
+
 
 2. 源码安装
 
@@ -79,7 +81,9 @@ go-api-cli -v
 go-api-cli -init prj-aiee-api
 ```
 执行成功后可以看到新生成的项目框架
+
 ![Alt text](images/init.png)
+
 
 也可以指定目录生成
 ```shell
@@ -136,10 +140,14 @@ mysql: mysql连接配置
 
 在项目文件下执行cli -g命令，将生成配置文件中指定表的API组
 ```shell
+# 进入项目文件
+cd prj-aiee-api
+# 生成API
 go-api-cli -g api
 ```
 
 执行成功后会在项目的service/apis/下生成以表名命名的文件及相关代码
+
 ![Alt text](images/genapi.png)
 
 也可以用cli -t指定表，表名可以是一个或多个，多个用英文逗号分隔。
@@ -162,7 +170,10 @@ go mod tidy
 go run main.go
 
 ```
+
 ![Alt text](images/start.png)
+
+
 此时API项目成功运行，就可以直接调用API来对数据库就行增删改查操作了。
 
 2. 调用API
@@ -177,5 +188,6 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 
 ```
 我看到创建成功后，获取列表可以查询刚刚新建的用户信息
-![Alt text](images/init.png)
+
+![Alt text](images/curl.png)
 
