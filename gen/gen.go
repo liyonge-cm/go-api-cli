@@ -27,9 +27,12 @@ type GenServer struct {
 	RemaneTableModelName func(name string) string
 }
 
-func NewGenServer() *GenServer {
+func NewGenServer(tables []string) *GenServer {
 	g := &GenServer{
 		cfg: &config.Cfg,
+	}
+	if tables != nil {
+		g.cfg.Api.Tables = tables
 	}
 	g.initCfgDefault()
 	return g

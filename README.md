@@ -19,11 +19,15 @@ Author:liyonge(aiee)
 4. Delete时，必传id参数，status设置为-1，更新时间自动设置为当前时间戳
 
 ### 3. api 风格
+
 1. API method统一为post，body以json入参。如
 ```shell
 curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json" -d "{\"limit\": 10,\"offset\": 1}" 
 ```
-2. 以表名作为group，crud分别为create,get,getList,update,delete。
+
+2. 入参json支持camel-驼峰，snake-下划线，默认snake。
+
+3. 以表名作为group，crud分别为create,get,getList,update,delete。
 如有一个表名为user，生成API请求地址分别为：
 - http://localhost:8080/user/create 
 - http://localhost:8080/user/get 
@@ -34,65 +38,144 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 
 ## cli使用
 
-首先下载源码，编译可执行文件
+步骤：
+1. 下载安装go-api-cli
+2. 生成项目
+3. 启动数据库并按规则创建库表
+4. 根据库表生成API
+5. 启动项目调用API
+
+### 1.下载安装
+
+1. go install 下载安装
 ```shell
+# go安装
+go install github.com/liyonge-cm/go-api-cli@1.0.0
+
+# 验证
+go-api-cli -v
+```
+![Alt text](images/version.png)
+
+2. 源码安装
+
+```shell
+# 拉取源码
+git clone https://github.com/liyonge-cm/go-api-cli
+
+# 编译
 go build
+
+# 将编译后的go-api-cli文件放至环境变量path下
+
+# 验证
+go-api-cli -v
 ```
 
-1. 按规则创建库表
+### 2.创建API项目
 
-2. 修改配置文件
+在当前目录下生成项目，名称为prj-aiee-api
+```shell
+go-api-cli -init prj-aiee-api
+```
+执行成功后可以看到新生成的项目框架
+![Alt text](images/init.png)
+
+也可以指定目录生成
+```shell
+go-api-cli -init ../prj/prj-aiee-api
+```
+
+默认生成的API参数格式是snake，如需指定为camel
+```shell
+go-api-cli -init prj-aiee-api -j camel
+```
+
+此时项目框架已经完全搭建起来了，具体的API要根据数据库的表来生成，所以下一步先创建库表，之后修改项目数据库连接，再生成API运行项目。
+
+### 3.按规则创建库表
+
+创建表的规则上面已经提到，这里给个示例：user表
+```sql
+CREATE TABLE `user` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `name` varchar(20) NOT NULL COMMENT '姓名',
+  `age` int NOT NULL COMMENT '年龄',
+  `status` tinyint(1) NOT NULL COMMENT '状态',
+  `created_at` bigint DEFAULT NULL COMMENT '创建时间',
+  `updated_at` bigint DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 COMMENT='用户信息表'
+```
+
+### 4.根据库表生成API
+
+1. 修改项目中的配置文件，config/config.yml。
+配置说明：
 ```yml
-mysql: mysql连接配置
+service:
+  port: 服务端口
 
 frame:
   out_path: 项目文件所在位置
   prj_name: 项目名称
-  json_case: api入参处参的json格式：camel-驼峰，默认下划线
+  json_case: api入参处参的json格式：camel-驼峰，snake-下划线，默认下划线
 
 api:
-  tables: 
-    - user 指定要生成API的表名
+  tables: 指定要生成API的表名
+    - user 
+
+mysql: mysql连接配置
+
 ```
 
-3. 创建项目
+这里主要需要修改mysql连接配置，其他保持原样即可。
+注意：tables是要生成API的表名，如果为空默认生成数据库内的所有表。
 
-执行编辑文件创建项目
-```shell
-go-api-cli -g frame
-```
-或直接运行main文件
-```shell
-go run main.go -g frame
-```
+2. 生成API
 
-4. 生成API
-
-执行编辑文件生成API
+在项目文件下执行cli -g命令，将生成配置文件中指定表的API组
 ```shell
 go-api-cli -g api
 ```
-或直接运行main文件
+
+执行成功后会在项目的service/apis/下生成以表名命名的文件及相关代码
+![Alt text](images/genapi.png)
+
+也可以用cli -t指定表，表名可以是一个或多个，多个用英文逗号分隔。
+在cli指定来表的情况下，忽略配置文件指定的表。
+
 ```shell
-go run main.go -g api
+go-api-cli -g api -t user
 ```
 
-## 启动生成的新项目
-```shell
-# 1. 进入项目文件: 
-cd xxx/prj-aiee-api
+### 5.启动项目
 
-# 2. 下载依赖包: 
+1. 启动项目
+
+在项目文件下执行go命令
+```shell
+# 1. 下载依赖包: 
 go mod tidy
 
-# 3. 修改配置config，数据库连接地址等
-
-# 4. 启动: 
+# 2. 启动: 
 go run main.go
 
-# 5. API调用，user为表名
-curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json" -d "{}" 
+```
+![Alt text](images/start.png)
+此时API项目成功运行，就可以直接调用API来对数据库就行增删改查操作了。
+
+2. 调用API
+
+假设我们新建一个名为aiee，芳龄18的用户
+```shell
+# 1. 创建user
+curl -X POST "http://localhost:8080/user/create" -H  "accept: application/json" -d "{\"name\": \"aiee\",\"age\": 18}" 
+
+# 2. API调用，获取user数据列表
+curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json" -d "{\"limit\": 10,\"offset\": 1}" 
 
 ```
+我看到创建成功后，获取列表可以查询刚刚新建的用户信息
+![Alt text](images/init.png)
 
-生成的项目代码保持简洁易懂，方便根据项目实际需求二次开发。

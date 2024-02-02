@@ -11,7 +11,7 @@ func TestGen(t *testing.T) {
 	// 读取配置文件
 	config.LoadConfig("../config/config.yml")
 
-	s := NewGenServer()
+	s := NewGenServer(nil)
 	s.ConnDB()
 
 	// s.RemaneTableFileName = func(name string) string {

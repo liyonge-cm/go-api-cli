@@ -3,6 +3,7 @@ package gen
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/liyonge-cm/go-api-cli/utils"
 
@@ -83,15 +84,21 @@ func (s *GenServer) getTableColumnInfo(tables []string) (tableColumnInfo map[str
 		var columns []*ColumnInfo
 		s.db.Raw(fmt.Sprintf("SHOW FULL COLUMNS FROM `%v` ", table)).Scan(&columns)
 		for _, v := range columns {
+
 			v.Name = utils.ToCamel(v.Field)
-			v.Type = s.getFieldType(v.Type)
+			// v.Type = s.getFieldType(v.Type)
+			t, err := s.checkLocalTypeForField(v.Type)
+			if err != nil {
+				return nil, err
+			}
+			v.Type = string(t)
 		}
 		tableColumnInfo[table] = columns
 	}
 	return
 }
 
-func (s *GenServer) getFieldType(fieldType string) string {
+func (s *GenServer) GetFieldType(fieldType string) string {
 	re := regexp.MustCompile(`^(\w+)\(`)
 	match := re.FindStringSubmatch(fieldType)
 	if len(match) > 1 {
@@ -99,13 +106,142 @@ func (s *GenServer) getFieldType(fieldType string) string {
 	}
 
 	fieldTypeMap := map[string]string{
-		"varchar": "string",
-		"decimal": "float64",
-		"bigint":  "int64",
-		"tinyint": "int",
+		"varchar":   "string",
+		"decimal":   "float64",
+		"bigint":    "int64",
+		"tinyint":   "int",
+		"smallint":  "int",
+		"mediumint": "int",
+		"float":     "float32",
 	}
 	if newType, ok := fieldTypeMap[fieldType]; ok {
 		return newType
 	}
 	return fieldType
+}
+
+// CheckLocalTypeForField checks and returns corresponding type for given db type.
+func (c *GenServer) checkLocalTypeForField(fieldType string) (LocalType, error) {
+	var (
+		typeName string
+	)
+
+	re := regexp.MustCompile(`^(\w+)\(`)
+	match := re.FindStringSubmatch(fieldType)
+	if len(match) > 1 {
+		typeName = match[1]
+	} else {
+		typeName = fieldType
+	}
+
+	typeName = strings.ToLower(typeName)
+
+	switch typeName {
+	case
+		fieldTypeBinary,
+		fieldTypeVarbinary,
+		fieldTypeBlob,
+		fieldTypeTinyblob,
+		fieldTypeMediumblob,
+		fieldTypeLongblob:
+		return LocalTypeBytes, nil
+
+	case
+		fieldTypeInt,
+		fieldTypeTinyint,
+		fieldTypeSmallInt,
+		fieldTypeSmallint,
+		fieldTypeMediumInt,
+		fieldTypeMediumint,
+		fieldTypeSerial:
+		if utils.ContainsI(fieldType, "unsigned") {
+			return LocalTypeUint, nil
+		}
+		return LocalTypeInt, nil
+
+	case
+		fieldTypeBigInt,
+		fieldTypeBigint,
+		fieldTypeBigserial:
+		if utils.ContainsI(fieldType, "unsigned") {
+			return LocalTypeUint64, nil
+		}
+		return LocalTypeInt64, nil
+
+	case
+		fieldTypeReal:
+		return LocalTypeFloat32, nil
+
+	case
+		fieldTypeDecimal,
+		fieldTypeMoney,
+		fieldTypeNumeric,
+		fieldTypeSmallmoney:
+		return LocalTypeString, nil
+	case
+		fieldTypeFloat,
+		fieldTypeDouble:
+		return LocalTypeFloat64, nil
+
+	case
+		fieldTypeBit:
+		// It is suggested using bit(1) as boolean.
+		// if typePattern == "1" {
+		// 	return LocalTypeBool, nil
+		// }
+		return LocalTypeInt64Bytes, nil
+
+	case
+		fieldTypeBool:
+		return LocalTypeBool, nil
+
+	case
+		fieldTypeDate:
+		return LocalTypeDate, nil
+
+	case
+		fieldTypeDatetime,
+		fieldTypeTimestamp,
+		fieldTypeTimestampz:
+		return LocalTypeDatetime, nil
+
+	case
+		fieldTypeJson:
+		return LocalTypeJson, nil
+
+	case
+		fieldTypeJsonb:
+		return LocalTypeJsonb, nil
+
+	default:
+		// Auto-detect field type, using key match.
+		switch {
+		case strings.Contains(typeName, "text") || strings.Contains(typeName, "char") || strings.Contains(typeName, "character"):
+			return LocalTypeString, nil
+
+		case strings.Contains(typeName, "float") || strings.Contains(typeName, "double") || strings.Contains(typeName, "numeric"):
+			return LocalTypeFloat64, nil
+
+		case strings.Contains(typeName, "bool"):
+			return LocalTypeBool, nil
+
+		case strings.Contains(typeName, "binary") || strings.Contains(typeName, "blob"):
+			return LocalTypeBytes, nil
+
+		case strings.Contains(typeName, "int"):
+			if utils.ContainsI(fieldType, "unsigned") {
+				return LocalTypeUint, nil
+			}
+			return LocalTypeInt, nil
+
+		case strings.Contains(typeName, "time"):
+			return LocalTypeDatetime, nil
+
+		case strings.Contains(typeName, "date"):
+			return LocalTypeDatetime, nil
+
+		default:
+			return LocalTypeString, nil
+		}
+	}
 }

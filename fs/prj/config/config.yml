@@ -1,0 +1,20 @@
+service:
+  port: 8080
+
+frame:
+  out_path: ./prj
+  prj_name: github.com/liyonge-cm/go-api-cli-prj
+  json_case: "snake"
+
+api:
+  tables: 
+    - user
+
+mysql:
+  endpoint: localhost:3306
+  username: root
+  password: 123456
+  database: aiee
+  max_idle_conns: 3
+  max_open_conns: 3
+
