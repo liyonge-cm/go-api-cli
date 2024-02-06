@@ -34,12 +34,12 @@ func LoadConfig(filename string) {
 	// 读取YAML文件内容
 	yamlFile, err := os.ReadFile(filename)
 	if err != nil {
-		log.Fatalf("无法读取YAML文件：%v", err)
+		log.Fatal(err)
 	}
 
 	// 解析YAML文件
 	err = yaml.Unmarshal(yamlFile, &Cfg)
 	if err != nil {
-		log.Fatalf("无法解析YAML文件：%v", err)
+		log.Fatal(err)
 	}
 }

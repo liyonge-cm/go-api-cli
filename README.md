@@ -53,7 +53,7 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 go install github.com/liyonge-cm/go-api-cli@1.0.0
 
 # 验证
-go-api-cli -v
+go-api-cli version
 ```
 
 ![Alt text](images/version.png)
@@ -71,35 +71,34 @@ go build
 # 将编译后的go-api-cli文件放至环境变量path下
 
 # 验证
-go-api-cli -v
+go-api-cli version
 ```
 
 ### 2.创建API项目
 
 在当前目录下生成项目，名称为prj-aiee-api
 ```shell
-go-api-cli -init prj-aiee-api
+go-api-cli init prj-aiee-api
 ```
 执行成功后可以看到新生成的项目框架
 
 ![Alt text](images/init.png)
 
-
 也可以指定目录生成
 ```shell
-go-api-cli -init ../prj/prj-aiee-api
+go-api-cli init ./prj/prj-aiee-api
 ```
 
 默认生成的API参数格式是snake，如需指定为camel
 ```shell
-go-api-cli -init prj-aiee-api -j camel
+go-api-cli init prj-aiee-api -j camel
 ```
 
 此时项目框架已经完全搭建起来了，具体的API要根据数据库的表来生成，所以下一步先创建库表，之后修改项目数据库连接，再生成API运行项目。
 
 ### 3.按规则创建库表
 
-创建表的规则上面已经提到，这里给个示例：user表
+创建表的规则上面已经提到，这里给个示例：user 用户信息表
 ```sql
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -114,8 +113,7 @@ CREATE TABLE `user` (
 
 ### 4.根据库表生成API
 
-1. 修改项目中的配置文件，config/config.yml。
-配置说明：
+1. 修改项目中的配置文件，config/config.yml。配置说明：
 ```yml
 service:
   port: 服务端口
@@ -142,8 +140,9 @@ mysql: mysql连接配置
 ```shell
 # 进入项目文件
 cd prj-aiee-api
+
 # 生成API
-go-api-cli -g api
+go-api-cli gen api
 ```
 
 执行成功后会在项目的service/apis/下生成以表名命名的文件及相关代码
@@ -154,7 +153,7 @@ go-api-cli -g api
 在cli指定来表的情况下，忽略配置文件指定的表。
 
 ```shell
-go-api-cli -g api -t user
+go-api-cli gen api -t user
 ```
 
 ### 5.启动项目

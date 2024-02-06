@@ -96,6 +96,9 @@ func (s *GenFrameService) GenFrame() (err error) {
 	if err = s.genWithPrjFile("service/apis/common/reply.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
 		return err
 	}
+	if err = s.genWithPrjFile("README.md", nil); err != nil {
+		return err
+	}
 	return nil
 }
 
