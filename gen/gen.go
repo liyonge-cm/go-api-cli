@@ -50,7 +50,7 @@ func (s *GenServer) initCfgDefault() {
 	}
 
 	s.modelPath = path.Join(s.cfg.Frame.OutPath, s.cfg.Frame.PrjName, "model")
-	s.apiPath = path.Join(s.cfg.Frame.OutPath, s.cfg.Frame.PrjName, "service/apis")
+	s.apiPath = path.Join(s.cfg.Frame.OutPath, s.cfg.Frame.PrjName, "service/api")
 
 	s.modelPkgName = "model"
 	s.isJsonCamel = s.cfg.Frame.JsonCase == "camel"

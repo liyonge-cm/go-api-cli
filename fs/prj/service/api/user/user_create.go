@@ -4,39 +4,35 @@ import (
 	"time"
 
 	"github.com/liyonge-cm/go-api-cli-prj/model"
-	"github.com/liyonge-cm/go-api-cli-prj/service/apis/common"
+	"github.com/liyonge-cm/go-api-cli-prj/service/api/common"
 	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
 type CreateUserApi struct {
-	*common.ApiCommon
+	*common.Controller
 	Data *model.User
 }
 
-func CreateUser(c *gin.Context) {
-	req := &CreateUserApi{
-		ApiCommon: common.NewRequest(c),
+func CreateUser(c *common.Controller) {
+	req := CreateUserApi{
+		Controller: c,
 	}
+	defer req.Response()
 
 	if err := req.BindRequest(&req.Data); err != nil {
-		req.Reply.BindRequestFailed().Response(c)
+		req.Reply.BindRequestFailed()
 		return
 	}
 	req.checkParams()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
 	req.createRecord()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
-
-	req.Reply.Response(c)
 }
 
 func (req *CreateUserApi) checkParams() {

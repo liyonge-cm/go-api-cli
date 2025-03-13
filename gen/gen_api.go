@@ -148,14 +148,14 @@ func (s *GenServer) generatorApiRouter(groupPath, prjName, packageName, groupRou
 }
 
 func (s *GenServer) importApiRouter(filePath, prjName, groupName string) error {
-	apiPath := path.Join(filePath, "apis.go")
+	apiPath := path.Join(filePath, "router/groups.go")
 
 	datab, err := os.ReadFile(apiPath)
 	if err != nil {
 		return err
 	}
 	content := string(datab)
-	newImportContent := fmt.Sprintf(`"%v/service/apis/%v"`, prjName, groupName)
+	newImportContent := fmt.Sprintf(`"%v/service/api/%v"`, prjName, groupName)
 	if !strings.Contains(content, newImportContent) {
 		content += fmt.Sprintf(`
 import _ %v`, newImportContent)

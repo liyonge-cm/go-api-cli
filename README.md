@@ -145,7 +145,7 @@ cd prj-aiee-api
 go-api-cli gen api
 ```
 
-执行成功后会在项目的service/apis/下生成以表名命名的文件及相关代码
+执行成功后会在项目的service/api/下生成以表名命名的文件及相关代码
 
 ![Alt text](images/genapi.png)
 

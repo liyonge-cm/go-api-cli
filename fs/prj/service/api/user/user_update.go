@@ -4,45 +4,41 @@ import (
 	"time"
 
 	"github.com/liyonge-cm/go-api-cli-prj/model"
-	"github.com/liyonge-cm/go-api-cli-prj/service/apis/common"
+	"github.com/liyonge-cm/go-api-cli-prj/service/api/common"
 	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-type DeleteUserApi struct {
-	*common.ApiCommon
-	Data DeleteUserRequest
+type UpdateUserApi struct {
+	*common.Controller
+	Data UpdateUserRequest
 }
-type DeleteUserRequest struct {
-	Id int `json:"id"`
+type UpdateUserRequest struct {
+	model.User
 }
 
-func DeleteUser(c *gin.Context) {
-	req := &DeleteUserApi{
-		ApiCommon: common.NewRequest(c),
+func UpdateUser(c *common.Controller) {
+	req := UpdateUserApi{
+		Controller: c,
 	}
+	defer req.Response()
+
 	if err := req.BindRequest(&req.Data); err != nil {
 		req.Reply.BindRequestFailed()
-		req.Reply.Response(c)
 		return
 	}
 	req.checkParams()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
-	req.deleteRecord()
+	req.updateRecord()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
-
-	req.Reply.Response(c)
 }
 
-func (req *DeleteUserApi) checkParams() {
+func (req *UpdateUserApi) checkParams() {
 	if req.Data.Id <= 0 {
 		req.Reply.MsgSet(common.ReplyStatusMissingParam, common.ReplyMessageMissingParam)
 		return
@@ -63,18 +59,19 @@ func (req *DeleteUserApi) checkParams() {
 	}
 }
 
-func (req *DeleteUserApi) deleteRecord() {
+func (req *UpdateUserApi) updateRecord() {
 	now := time.Now().Unix()
 	record := &model.User{
-		Status:    common.RecordStatusDeleted,
+		Name:      req.Data.Name,
+		Age:       req.Data.Age,
 		UpdatedAt: now,
 	}
 	err := mysql.DB.Model(&model.User{}).
 		Where("id = ?", req.Data.Id).
 		Updates(&record).Error
 	if err != nil {
-		req.Logger.Error("delete record failed", zap.Any("Data", record), zap.Error(err))
-		req.Reply.DeleteFailed()
+		req.Logger.Error("update record failed", zap.Any("Data", record), zap.Error(err))
+		req.Reply.UpdateFailed()
 		return
 	}
 }

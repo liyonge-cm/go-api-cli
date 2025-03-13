@@ -30,7 +30,15 @@ func NewMySQL(ctx context.Context, config *config.MySQL) *MySQL {
 }
 
 func (s *MySQL) WithLogger(log *zap.Logger) {
-	s.Logger = log
+	s.Logger = log.With(zap.String("service", "mysql"))
+}
+
+func (s *MySQL) Start() {
+	s.ConnDB()
+	DB = s.DB
+}
+
+func (s *MySQL) Close() {
 }
 
 func (s *MySQL) ConnDB() {

@@ -23,7 +23,7 @@ func TestGen(t *testing.T) {
 }
 
 func TestGenJson(t *testing.T) {
-	contentPath := "../prj/service/apis/apis.go"
+	contentPath := "../prj/service/api/api.go"
 	datab, err := os.ReadFile(contentPath)
 	if err != nil {
 		fmt.Println(err.Error())

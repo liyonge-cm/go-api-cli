@@ -2,9 +2,6 @@ package common
 
 import (
 	"encoding/json"
-	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 type CommonResponse struct {
@@ -73,17 +70,4 @@ func (r *CommonResponse) DeleteFailed() *CommonResponse {
 	r.Status = ReplyStatusDeleteFailed
 	r.Message = ReplyMessageDeleteFailed
 	return r
-}
-
-func (r *CommonResponse) Response(c *gin.Context) {
-	reply := make(map[string]interface{})
-	reply["status"] = r.Status
-	reply["message"] = r.Message
-	if r.Data != nil {
-		for k, v := range r.Data {
-			reply[k] = v
-		}
-	}
-
-	c.JSON(http.StatusOK, reply)
 }

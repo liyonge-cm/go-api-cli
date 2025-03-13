@@ -4,44 +4,41 @@ import (
 	"time"
 
 	"github.com/liyonge-cm/go-api-cli-prj/model"
-	"github.com/liyonge-cm/go-api-cli-prj/service/apis/common"
+	"github.com/liyonge-cm/go-api-cli-prj/service/api/common"
 	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-type UpdateUserApi struct {
-	*common.ApiCommon
-	Data UpdateUserRequest
+type DeleteUserApi struct {
+	*common.Controller
+	Data DeleteUserRequest
 }
-type UpdateUserRequest struct {
-	model.User
+type DeleteUserRequest struct {
+	Id int `json:"id"`
 }
 
-func UpdateUser(c *gin.Context) {
-	req := &UpdateUserApi{
-		ApiCommon: common.NewRequest(c),
+func DeleteUser(c *common.Controller) {
+	req := DeleteUserApi{
+		Controller: c,
 	}
+	defer req.Response()
+
 	if err := req.BindRequest(&req.Data); err != nil {
-		req.Reply.BindRequestFailed().Response(c)
+		req.Reply.BindRequestFailed()
 		return
 	}
 	req.checkParams()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
-	req.updateRecord()
+	req.deleteRecord()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
-
-	req.Reply.Response(c)
 }
 
-func (req *UpdateUserApi) checkParams() {
+func (req *DeleteUserApi) checkParams() {
 	if req.Data.Id <= 0 {
 		req.Reply.MsgSet(common.ReplyStatusMissingParam, common.ReplyMessageMissingParam)
 		return
@@ -62,19 +59,18 @@ func (req *UpdateUserApi) checkParams() {
 	}
 }
 
-func (req *UpdateUserApi) updateRecord() {
+func (req *DeleteUserApi) deleteRecord() {
 	now := time.Now().Unix()
 	record := &model.User{
-		Name:      req.Data.Name,
-		Age:       req.Data.Age,
+		Status:    common.RecordStatusDeleted,
 		UpdatedAt: now,
 	}
 	err := mysql.DB.Model(&model.User{}).
 		Where("id = ?", req.Data.Id).
 		Updates(&record).Error
 	if err != nil {
-		req.Logger.Error("update record failed", zap.Any("Data", record), zap.Error(err))
-		req.Reply.UpdateFailed()
+		req.Logger.Error("delete record failed", zap.Any("Data", record), zap.Error(err))
+		req.Reply.DeleteFailed()
 		return
 	}
 }

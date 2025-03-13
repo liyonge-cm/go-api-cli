@@ -75,7 +75,10 @@ func (s *GenFrameService) GenFrame() (err error) {
 	}); err != nil {
 		return err
 	}
-	if err = s.genWithPrjFile("router/router.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+	if err = s.genWithPrjFile("app/app.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+		return err
+	}
+	if err = s.genWithPrjFile("app/run.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
 		return err
 	}
 	if err = s.genWithPrjFile("service/logger/logger.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
@@ -84,16 +87,22 @@ func (s *GenFrameService) GenFrame() (err error) {
 	if err = s.genWithPrjFile("service/mysql/mysql.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
 		return err
 	}
-	if err = s.genWithPrjFile("service/apis/apis.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+	if err = s.genWithPrjFile("service/api/api.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
 		return err
 	}
-	if err = s.genWithPrjFile("service/apis/common/common.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+	if err = s.genWithPrjFile("service/api/common/common.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
 		return err
 	}
-	if err = s.genWithPrjFile("service/apis/common/const.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+	if err = s.genWithPrjFile("service/api/common/router.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
 		return err
 	}
-	if err = s.genWithPrjFile("service/apis/common/reply.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+	if err = s.genWithPrjFile("service/api/common/const.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+		return err
+	}
+	if err = s.genWithPrjFile("service/api/common/reply.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
+		return err
+	}
+	if err = s.genWithPrjFile("service/api/router/groups.go", map[string]string{s.genPrjName: s.cfg.PrjName}); err != nil {
 		return err
 	}
 	if err = s.genWithPrjFile("README.md", nil); err != nil {

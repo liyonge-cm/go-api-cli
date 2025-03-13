@@ -2,15 +2,14 @@ package user
 
 import (
 	"github.com/liyonge-cm/go-api-cli-prj/model"
-	"github.com/liyonge-cm/go-api-cli-prj/service/apis/common"
+	"github.com/liyonge-cm/go-api-cli-prj/service/api/common"
 	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
 type GetUsersApi struct {
-	*common.ApiCommon
+	*common.Controller
 	Data GetUsersRequest
 }
 type GetUsersRequest struct {
@@ -21,19 +20,19 @@ type GetUsersResponse struct {
 	Count int64         `json:"count"`
 }
 
-func GetUsers(c *gin.Context) {
-	req := &GetUsersApi{
-		ApiCommon: common.NewRequest(c),
+func GetUsers(c *common.Controller) {
+	req := GetUsersApi{
+		Controller: c,
 	}
+	defer req.Response()
+
 	if err := req.BindRequest(&req.Data); err != nil {
 		req.Reply.BindRequestFailed()
-		req.Reply.Response(c)
 		return
 	}
 
 	records, count := req.getRecords()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
 
@@ -42,7 +41,6 @@ func GetUsers(c *gin.Context) {
 		Count: count,
 	}
 	req.Reply.DataSet(res)
-	req.Reply.Response(c)
 }
 
 func (req *GetUsersApi) getRecords() (records []*model.User, count int64) {

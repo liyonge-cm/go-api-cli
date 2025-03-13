@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -27,19 +26,22 @@ type MySQL struct {
 	MaxOpenConns int    `yaml:"max_open_conns"`
 }
 
-func LoadConfig(filename string) {
+func LoadConfig(filename string) (cfg Config, err error) {
 	if filename == "" {
 		filename = "config.yml"
 	}
 	// 读取YAML文件内容
 	yamlFile, err := os.ReadFile(filename)
 	if err != nil {
-		log.Fatal(err)
+		return cfg, err
 	}
 
 	// 解析YAML文件
-	err = yaml.Unmarshal(yamlFile, &Cfg)
+	err = yaml.Unmarshal(yamlFile, &cfg)
 	if err != nil {
-		log.Fatal(err)
+		return cfg, err
 	}
+
+	Cfg = cfg
+	return cfg, err
 }

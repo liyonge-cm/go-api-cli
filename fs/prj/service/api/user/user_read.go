@@ -2,15 +2,14 @@ package user
 
 import (
 	"github.com/liyonge-cm/go-api-cli-prj/model"
-	"github.com/liyonge-cm/go-api-cli-prj/service/apis/common"
+	"github.com/liyonge-cm/go-api-cli-prj/service/api/common"
 	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
 type GetUserApi struct {
-	*common.ApiCommon
+	*common.Controller
 	Data GetUserRequest
 }
 type GetUserRequest struct {
@@ -20,28 +19,26 @@ type GetUserResponse struct {
 	Data *model.User `json:"data"`
 }
 
-func GetUser(c *gin.Context) {
-	req := &GetUserApi{
-		ApiCommon: common.NewRequest(c),
+func GetUser(c *common.Controller) {
+	req := GetUserApi{
+		Controller: c,
 	}
+	defer req.Response()
+
 	if err := req.BindRequest(&req.Data); err != nil {
 		req.Reply.BindRequestFailed()
-		req.Reply.Response(c)
 		return
 	}
 	req.checkParams()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
 	record := req.getRecord()
 	if req.Reply.IsStatusFailed() {
-		req.Reply.Response(c)
 		return
 	}
 
 	req.Reply.DataSet(GetUserResponse{Data: record})
-	req.Reply.Response(c)
 }
 
 func (req *GetUserApi) checkParams() {

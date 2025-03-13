@@ -1,16 +1,12 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"os"
 
+	"github.com/liyonge-cm/go-api-cli-prj/app"
 	"github.com/liyonge-cm/go-api-cli-prj/config"
-	"github.com/liyonge-cm/go-api-cli-prj/router"
-	_ "github.com/liyonge-cm/go-api-cli-prj/service/apis"
-	"github.com/liyonge-cm/go-api-cli-prj/service/logger"
-	"github.com/liyonge-cm/go-api-cli-prj/service/mysql"
 )
 
 func main() {
@@ -21,10 +17,11 @@ func main() {
 		os.Exit(0)
 	}
 	// 加载配置文件
-	config.LoadConfig(*configFile)
-	logger.Logger.Info("Service Start")
-	db := mysql.NewMySQL(context.Background(), &config.Cfg.MySQL)
-	db.WithLogger(logger.Logger)
-	db.ConnDB()
-	router.Init()
+	cfg, err := config.LoadConfig(*configFile)
+	if err != nil {
+		fmt.Println("load config fail", err.Error())
+		os.Exit(0)
+	}
+	app := app.NewApp(&cfg)
+	app.Run()
 }
