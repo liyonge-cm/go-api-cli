@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -24,13 +25,16 @@ func (c *CmdGen) Register(cmdMap map[string]Command) {
 }
 
 func (c *CmdGen) Help() string {
-	return "generating module: api"
+	return "generating module: api or model"
 }
 
 func (c *CmdGen) SetArgs(args []string, option map[string]string) error {
 	if len(args) == 0 {
-		c.mod = "api"
-		return nil
+		return errors.New("generating module is required, api or model")
+	}
+	c.mod = args[0]
+	if c.mod != "api" && c.mod != "model" {
+		return errors.New("generating module is error, api or model")
 	}
 	if option == nil {
 		return nil
@@ -85,6 +89,27 @@ func (c *CmdGen) Run() {
 			return
 		}
 		fmt.Println("gen", c.mod, "success")
+
+	case "model":
+		var tables []string
+		if table != "" {
+			tables = strings.Split(table, ",")
+		}
+		s := gen.NewGenServer(tables)
+		// 获取表字段
+		if err := s.ConnDB(); err != nil {
+			fmt.Println("gen", c.mod, "failed,", "connect db err,", err.Error())
+			return
+		}
+		if err := s.GetTableFields(); err != nil {
+			fmt.Println("gen", c.mod, "failed,", "get table fields err,", err.Error())
+			return
+		}
+		// 生成model
+		if err := s.GenModel(); err != nil {
+			fmt.Println("gen", c.mod, "failed,", "generate go model err,", err.Error())
+			return
+		}
 
 	case "frame":
 		s := gen_frame.NewGenFrameService(nil)

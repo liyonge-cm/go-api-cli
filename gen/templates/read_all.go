@@ -16,6 +16,7 @@ type $func_nameApi struct {
 }
 type $func_nameRequest struct {
 	common.Page
+	model.$model_name
 }
 type $func_nameResponse struct {
 	$all_data_response
@@ -48,6 +49,7 @@ func $func_name(c *common.Controller) {
 func (req *$func_nameApi) getRecords() (records []*model.$model_name, count int64) {
 	records = make([]*model.$model_name, 0)
 	tx := mysql.DB.Model(&model.$model_name{}).Where("status != ?", common.RecordStatusDeleted)
+	tx = tx.Where(req.Data.$model_name)
 
 	tx = tx.Count(&count)
 	if count == 0 {
