@@ -9,6 +9,12 @@ const (
 	ReplyMessageBindRequestFailed = "API参数错误"
 	ReplyStatusMissingParam       = 2
 	ReplyMessageMissingParam      = "缺失API参数"
+	ReplyStatusCommonFailed       = 3
+	ReplyMessageCommonFailed      = "失败"
+	ReplyStatusParamMiss          = 4
+	ReplyMessageParamMiss         = "[%v]参数缺失"
+	ReplyStatusParamFailed        = 5
+	ReplyMessageParamFailed       = "[%v]参数错误"
 
 	ReplyStatusCreateFailed  = 10
 	ReplyMessageCreateFailed = "创建失败"

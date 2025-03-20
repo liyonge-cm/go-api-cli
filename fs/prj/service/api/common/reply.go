@@ -2,6 +2,7 @@ package common
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 type CommonResponse struct {
@@ -51,6 +52,27 @@ func (r *CommonResponse) BindRequestFailed() *CommonResponse {
 	r.Message = ReplyMessageBindRequestFailed
 	return r
 }
+func (r *CommonResponse) WithParamMiss(key string) *CommonResponse {
+	r.Status = ReplyStatusParamMiss
+	r.Message = fmt.Sprintf(ReplyMessageParamMiss, key)
+	return r
+}
+func (r *CommonResponse) WithParamFailed(key string) *CommonResponse {
+	r.Status = ReplyStatusParamFailed
+	r.Message = fmt.Sprintf(ReplyMessageParamFailed, key)
+	return r
+}
+func (r *CommonResponse) WithMsgFailed(msg string) *CommonResponse {
+	r.Status = ReplyStatusCommonFailed
+	r.Message = msg
+	return r
+}
+func (r *CommonResponse) WithFailed(status int, msg string) *CommonResponse {
+	r.Status = status
+	r.Message = msg
+	return r
+}
+
 func (r *CommonResponse) CreateFailed() *CommonResponse {
 	r.Status = ReplyStatusCreateFailed
 	r.Message = ReplyMessageCreateFailed

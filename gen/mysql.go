@@ -82,9 +82,11 @@ func (s *GenServer) getTableColumnInfo(tables []string) (tableColumnInfo map[str
 	tableColumnInfo = map[string][]*ColumnInfo{}
 	for _, table := range tables {
 		var columns []*ColumnInfo
-		s.db.Raw(fmt.Sprintf("SHOW FULL COLUMNS FROM `%v` ", table)).Scan(&columns)
+		err = s.db.Raw(fmt.Sprintf("SHOW FULL COLUMNS FROM `%v` ", table)).Scan(&columns).Error
+		if err != nil {
+			return
+		}
 		for _, v := range columns {
-
 			v.Name = utils.ToCamel(v.Field)
 			// v.Type = s.getFieldType(v.Type)
 			t, err := s.checkLocalTypeForField(v.Type)
