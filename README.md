@@ -50,7 +50,7 @@ curl -X POST "http://localhost:8080/user/getList" -H  "accept: application/json"
 1. go install 下载安装
 ```shell
 # go安装
-go install github.com/liyonge-cm/go-api-cli@1.0.0
+go install github.com/liyonge-cm/go-api-cli@v1.0.8
 
 # 验证
 go-api-cli version
@@ -58,6 +58,7 @@ go-api-cli version
 
 ![Alt text](images/version.png)
 
+如果报错"command not found"，需要把go path下面的bin添加到环境变量，默认路径：/Users/eell/go/bin
 
 2. 源码安装
 

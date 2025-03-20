@@ -8,7 +8,7 @@ import (
 
 const (
 	// VERSION is the current go-api-cli version.
-	VERSION = "v1.0.7"
+	VERSION = "v1.0.8"
 )
 
 type CmdVersion struct{}

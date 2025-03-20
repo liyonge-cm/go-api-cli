@@ -33,7 +33,10 @@ func $func_name(c *common.Controller) {
 		req.Reply.BindRequestFailed()
 		return
 	}
-
+	req.checkParams()
+	if req.Reply.IsStatusFailed() {
+		return
+	}
 	records, count := req.getRecords()
 	if req.Reply.IsStatusFailed() {
 		return
@@ -44,6 +47,9 @@ func $func_name(c *common.Controller) {
 		Count: count,
 	}
 	req.Reply.DataSet(res)
+}
+
+func (req *$func_nameApi) checkParams() {
 }
 
 func (req *$func_nameApi) getRecords() (records []*model.$model_name, count int64) {

@@ -42,7 +42,7 @@ func $func_name(c *common.Controller) {
 
 func (req *$func_nameApi) checkParams() {
 	if req.Data.Id <= 0 {
-		req.Reply.MsgSet(common.ReplyStatusMissingParam, common.ReplyMessageMissingParam)
+		req.Reply.WithParamMiss("id")
 		return
 	}
 	var count int64
@@ -56,7 +56,7 @@ func (req *$func_nameApi) checkParams() {
 		return
 	}
 	if count <= 0 {
-		req.Reply.MsgSet(common.ReplyStatusBindRequestFailed, common.ReplyMessageBindRequestFailed)
+		req.Reply.WithParamFailed("id")
 		return
 	}
 }
