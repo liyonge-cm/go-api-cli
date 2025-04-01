@@ -42,14 +42,13 @@ func (req *$func_nameApi) checkParams() {
 
 func (req *$func_nameApi) createRecord() {
 	now := time.Now().Unix()
-	record := &model.$model_name{$params_content
-		Status:    common.RecordStatusInit,
-		CreatedAt: now,
-		UpdatedAt: now,
-	}
-	err := mysql.DB.Model(&model.$model_name{}).Create(&record).Error
+	req.Data.Status = common.RecordStatusInit
+	req.Data.CreatedAt = now
+	req.Data.UpdatedAt = now
+
+	err := mysql.DB.Model(&model.$model_name{}).Create(&req.Data).Error
 	if err != nil {
-		req.Logger.Error("create record failed", zap.Any("Data", record), zap.Error(err))
+		req.Logger.Error("create record failed", zap.Any("Data", req.Data), zap.Error(err))
 		req.Reply.CreateFailed()
 		return
 	}

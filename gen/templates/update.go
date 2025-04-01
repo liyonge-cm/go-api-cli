@@ -63,14 +63,13 @@ func (req *$func_nameApi) checkParams() {
 
 func (req *$func_nameApi) updateRecord() {
 	now := time.Now().Unix()
-	record := &model.$model_name{$params_content
-		UpdatedAt: now,
-	}
+	req.Data.UpdatedAt = now
+	
 	err := mysql.DB.Model(&model.$model_name{}).
 		Where("id = ?", req.Data.Id).
-		Updates(&record).Error
+		Updates(&req.Data).Error
 	if err != nil {
-		req.Logger.Error("update record failed", zap.Any("Data", record), zap.Error(err))
+		req.Logger.Error("update record failed", zap.Any("Data", req.Data), zap.Error(err))
 		req.Reply.UpdateFailed()
 		return
 	}
